@@ -1,0 +1,24 @@
+ifndef prefix
+       prefix=~
+endif
+export prefix
+
+libdir=$(prefix)/lib
+includedir=$(prefix)/include
+
+QMAKE=qmake
+
+build:
+	(cd qcustomplot-sharedlib/sharedlib-compilation; qmake; make)
+
+install: build
+	cp -P qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot*.so* \
+	$(libdir)
+	cp qcustomplot.h $(includedir)
+
+uninstall:
+	- rm -f $(libdir)/libqcustomplot*.so*
+	- rm -f $(includedir)/qcustomplot.h
+
+clean:
+	- (cd qcustomplot-sharedlib/sharedlib-compilation; make distclean)
