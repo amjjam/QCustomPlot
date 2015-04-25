@@ -8,13 +8,20 @@ includedir=$(prefix)/include
 
 QMAKE=qmake
 
-build:
-	(cd qcustomplot-sharedlib/sharedlib-compilation; qmake; make)
+build: qcustomplot-sharedlib/sharedlib-compilation/Makefile
+	(cd qcustomplot-sharedlib/sharedlib-compilation; make)
 
-install: build
+qcustomplot-sharedlib/sharedlib-compilation/Makefile: qcustomplot-sharedlib/sharedlib-compilation/sharedlib-compilation.pro
+	(cd qcustomplot-sharedlib/sharedlib-compilation; qmake)
+
+install: $(libdir)/libqcustomplot.so $(includedir)/qcustomplot.h
+
+$(libdir)/libqcustomplot.so $(includedir)/libqcustomplot.h: qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot.so qcustomplot.h
 	cp -P qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot*.so* \
 	$(libdir)
 	cp qcustomplot.h $(includedir)
+
+qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot.so: build
 
 uninstall:
 	- rm -f $(libdir)/libqcustomplot*.so*
