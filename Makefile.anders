@@ -1,5 +1,5 @@
 ifndef prefix
-       prefix=~
+       prefix=/opt/QCustomPlot/
 endif
 export prefix
 
@@ -17,6 +17,9 @@ qcustomplot-sharedlib/sharedlib-compilation/Makefile: qcustomplot-sharedlib/shar
 install: $(libdir)/libqcustomplot.so $(includedir)/qcustomplot.h
 
 $(libdir)/libqcustomplot.so $(includedir)/libqcustomplot.h: qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot.so qcustomplot.h
+	- mkdir $(prefix)
+	- mkdir $(libdir)
+	- mkdir $(includedir)
 	cp -P qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot*.so* \
 	$(libdir)
 	cp qcustomplot.h $(includedir)
@@ -26,6 +29,9 @@ qcustomplot-sharedlib/sharedlib-compilation/libqcustomplot.so: build
 uninstall:
 	- rm -f $(libdir)/libqcustomplot*.so*
 	- rm -f $(includedir)/qcustomplot.h
+	- rmdir $(libdir)
+	- rmdir $(includedir)
+	- rmdir $(prefix)
 
 clean:
 	- (cd qcustomplot-sharedlib/sharedlib-compilation; make distclean)
